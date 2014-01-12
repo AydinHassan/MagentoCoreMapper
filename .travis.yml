@@ -11,3 +11,4 @@ branches:
 
 before_script:
   - composer install
+  - composer dump-autoload
