@@ -17,6 +17,7 @@ if ((!$loader = includeIfExists(__DIR__.'/../vendor/autoload.php')) && (!$loader
 
 $app = new \Symfony\Component\Console\Application('Magento Core Mapper', '0.1.0');
 $app->addCommands(array(
-   new \AydinHassan\MagentoCoreMapper\Command\GenerateCommand(),
+    new \AydinHassan\MagentoCoreMapper\Command\GenerateComposer(),
+    new \AydinHassan\MagentoCoreMapper\Command\GenerateModman(),
 ));
 $app->run();
