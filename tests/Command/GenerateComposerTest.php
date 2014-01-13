@@ -3,21 +3,16 @@
 namespace AydinHassan\MagentoCoreMapper\Command;
 
 use Symfony\Component\Console\Tester\CommandTester;
-use AydinHassan\MagentoCoreMapper\Command\GenerateComposer;
 use Symfony\Component\Console\Application;
+use AydinHassan\MagentoCoreMapper\Command\GenerateComposer;
 
 /**
  * Class GenerateComposerTest
  * @package AydinHassan\MagentoCoreMapper\Command
  * @author Aydin Hassan <aydin@hotmail.co.uk>
  */
-class GenerateComposerTest extends \PHPUnit_Framework_TestCase
+class GenerateComposerTest extends GenerateAbstractTest
 {
-
-    /**
-     * @var string Project Root
-     */
-    protected $projectRoot = null;
 
     /**
      * @var \Symfony\Component\Console\Tester\CommandTester
@@ -34,19 +29,13 @@ class GenerateComposerTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-
-        $this->projectRoot = __DIR__ . "/../magentotestinstall";
-
-        if(!file_exists($this->projectRoot)) {
-            mkdir($this->projectRoot, 0777, true);
-        }
+        parent::setUp();
 
         $application = new Application();
         $application->add(new GenerateComposer());
 
         $this->command = $application->find('generate:composer');
         $this->commandTester = new CommandTester($this->command);
-
     }
 
     /**
@@ -116,7 +105,6 @@ class GenerateComposerTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertSame($expected, \json_decode(\file_get_contents("$this->projectRoot/composer.json"), true));
-        unlink("$this->projectRoot/test.php");
     }
 
     /**
@@ -170,7 +158,6 @@ class GenerateComposerTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertSame($expected, \json_decode(\file_get_contents("$this->projectRoot/composer.json"), true));
-        unlink("$this->projectRoot/test.php");
     }
 
     /**
@@ -210,22 +197,5 @@ class GenerateComposerTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertSame($expected, \json_decode(\file_get_contents("$this->projectRoot/composer.json"), true));
-
-        unlink("$this->projectRoot/file1.php");
-        unlink("$this->projectRoot/folder/moarcode.php");
-        unlink("$this->projectRoot/folder/evenmoar.php");
-        rmdir("$this->projectRoot/folder");
     }
-
-    /**
-     * Remove left over files
-     */
-    public function tearDown()
-    {
-        if(file_exists("$this->projectRoot/composer.json")) {
-            unlink("$this->projectRoot/composer.json");
-        }
-        rmdir(__DIR__ . "/../magentotestinstall");
-    }
-
 } 

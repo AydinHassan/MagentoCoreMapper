@@ -3,21 +3,16 @@
 namespace AydinHassan\MagentoCoreMapper\Command;
 
 use Symfony\Component\Console\Tester\CommandTester;
-use AydinHassan\MagentoCoreMapper\Command\GenerateModman;
 use Symfony\Component\Console\Application;
+use AydinHassan\MagentoCoreMapper\Command\GenerateModman;
 
 /**
  * Class GenerateModmanTest
  * @package AydinHassan\MagentoCoreMapper\Command
  * @author Aydin Hassan <aydin@hotmail.co.uk>
  */
-class GenerateModmanTest extends \PHPUnit_Framework_TestCase
+class GenerateModmanTest extends GenerateAbstractTest
 {
-
-    /**
-     * @var string Project Root
-     */
-    protected $projectRoot = null;
 
     /**
      * @var \Symfony\Component\Console\Tester\CommandTester
@@ -34,18 +29,13 @@ class GenerateModmanTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->projectRoot = __DIR__ . "/../magentotestinstall";
-
-        if(!file_exists($this->projectRoot)) {
-            mkdir($this->projectRoot, 0777, true);
-        }
+        parent::setUp();
 
         $application = new Application();
         $application->add(new GenerateModman());
 
         $this->command = $application->find('generate:modman');
         $this->commandTester = new CommandTester($this->command);
-
     }
 
     /**
@@ -54,7 +44,6 @@ class GenerateModmanTest extends \PHPUnit_Framework_TestCase
     public function testModmanFileNotOverwrittenIfExists()
     {
         touch("$this->projectRoot/modman");
-
         $this->setExpectedException('Exception', 'File "modman" already exists, run with force-write option to overwrite');
 
         $this->commandTester->execute(
@@ -84,7 +73,6 @@ class GenerateModmanTest extends \PHPUnit_Framework_TestCase
         $content = "file1.php file1.php";
         $this->assertFileExists("$this->projectRoot/modman");
         $this->assertEquals($content, trim(\file_get_contents("$this->projectRoot/modman")));
-        unlink("$this->projectRoot/file1.php");
     }
 
     /**
@@ -119,8 +107,6 @@ class GenerateModmanTest extends \PHPUnit_Framework_TestCase
         $content = "file1.php file1.php";
         $this->assertFileExists("$this->projectRoot/modman");
         $this->assertEquals($content, trim(\file_get_contents("$this->projectRoot/modman")));
-        unlink("$this->projectRoot/file1.php");
-
     }
 
     /**
@@ -143,22 +129,6 @@ class GenerateModmanTest extends \PHPUnit_Framework_TestCase
         $content = "file1.php file1.php\nfolder/evenmoar.php folder/evenmoar.php\nfolder/moarcode.php folder/moarcode.php";
         $this->assertFileExists("$this->projectRoot/modman");
         $this->assertEquals($content, trim(\file_get_contents("$this->projectRoot/modman")));
-
-        unlink("$this->projectRoot/file1.php");
-        unlink("$this->projectRoot/folder/moarcode.php");
-        unlink("$this->projectRoot/folder/evenmoar.php");
-        rmdir("$this->projectRoot/folder");
-    }
-
-    /**
-     * Remove left over files
-     */
-    public function tearDown()
-    {
-        if(file_exists("$this->projectRoot/modman")) {
-            unlink("$this->projectRoot/modman");
-        }
-        rmdir(__DIR__ . "/../magentotestinstall");
     }
 
 } 
