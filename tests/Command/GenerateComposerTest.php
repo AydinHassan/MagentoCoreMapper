@@ -188,9 +188,9 @@ class GenerateComposerTest extends GenerateAbstractTest
             'extra' => array(
                 'magento-root-dir' => 'htdocs',
                 'map' => array(
-                    array('file1.php', 'file1.php'),
-                    array('folder/evenmoar.php', 'folder/evenmoar.php'),
                     array('folder/moarcode.php', 'folder/moarcode.php'),
+                    array('folder/evenmoar.php', 'folder/evenmoar.php'),
+                    array('file1.php', 'file1.php'),
                 ),
             ),
             'type' => 'magento-core'

@@ -30,10 +30,16 @@ abstract class GenerateAbstract extends Command
      */
     protected function processFiles()
     {
-        $dirIterator    = new \RecursiveDirectoryIterator(".", \FilesystemIterator::SKIP_DOTS);
+        $dirIterator    = new \RecursiveDirectoryIterator(".", \FilesystemIterator::SKIP_DOTS | \RecursiveIteratorIterator::SELF_FIRST);
         $filter         = new \AydinHassan\MagentoCoreMapper\RecursiveFilterIterator\Mappings($dirIterator);
         $iterator       = new \RecursiveIteratorIterator($filter);
-        return $iterator;
+
+        $files = array();
+        foreach($iterator as $file) {
+            $files[] = $file;
+        }
+        asort($files);
+        return $files;
     }
 
     /**
