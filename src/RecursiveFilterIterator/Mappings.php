@@ -2,8 +2,11 @@
 
 namespace AydinHassan\MagentoCoreMapper\RecursiveFilterIterator;
 
+
 /**
- * @author Aydin Hassan <aydin@wearejh.com>
+ * Class Mappings
+ * @package AydinHassan\MagentoCoreMapper\RecursiveFilterIterator
+ * @author Aydin Hassan <aydin@hotmail.co.uk>
  */
 class Mappings extends \RecursiveFilterIterator
 {

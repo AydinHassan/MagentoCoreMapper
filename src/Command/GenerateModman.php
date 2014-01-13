@@ -8,8 +8,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
- * @author Aydin Hassan <aydin@hotmail.co.uk>
+ * Class GenerateModman
  * @package AydinHassan\MagentoCoreMapper\Command
+ * @author Aydin Hassan <aydin@hotmail.co.uk>
  */
 class GenerateModman extends GenerateAbstract
 {
@@ -30,10 +31,11 @@ class GenerateModman extends GenerateAbstract
     protected function configure()
     {
 
+        parent::configure();
+
         $this
             ->setName('generate:modman')
             ->setDescription('Create a modman mapping file for your Magento Core Package')
-            ->setDefinition(array())
             ->setHelp(<<<EOT
 This command creates a modman mapping file for your magento core package.
 
@@ -41,9 +43,7 @@ It will change to the directory you pass in as "project-root" and recursively li
 
 If the modman file already exists, use -f flag or --force-write to force the write!
 EOT
-            )
-            ->addArgument("project-root", InputArgument::REQUIRED, "The folder you wish to create the mappings in")
-            ->addOption("force-write", "-f", InputOption::VALUE_NONE, "If mapping exists then overwrite it");
+            );
     }
 
     /**

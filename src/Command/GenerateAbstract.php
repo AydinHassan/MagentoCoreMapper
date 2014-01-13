@@ -9,8 +9,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
- * @author Aydin Hassan <aydin@hotmail.co.uk>
+ * Class GenerateAbstract
  * @package AydinHassan\MagentoCoreMapper\Command
+ * @author Aydin Hassan <aydin@hotmail.co.uk>
  */
 abstract class GenerateAbstract extends Command
 {
@@ -74,6 +75,16 @@ abstract class GenerateAbstract extends Command
     }
 
     /**
+     * Add default args & options
+     */
+    protected function configure()
+    {
+        $this->setDefinition(array())
+             ->addArgument("project-root", InputArgument::REQUIRED, "The folder you wish to create the mappings in")
+             ->addOption("force-write", "-f", InputOption::VALUE_NONE, "If mapping exists then overwrite it");
+    }
+
+    /**
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int|null|void
@@ -96,8 +107,20 @@ abstract class GenerateAbstract extends Command
         $this->create($input, $output);
     }
 
+    /**
+     * Create the mapping
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
     protected abstract function create(InputInterface $input, OutputInterface $output);
 
+
+    /**
+     * Return the Map Type
+     *
+     * @return string
+     */
     protected abstract function getMapType();
 
 }

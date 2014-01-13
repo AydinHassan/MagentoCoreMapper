@@ -9,8 +9,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Campiers\JsonPretty\JsonPretty;
 
 /**
- * @author Aydin Hassan <aydin@hotmail.co.uk>
+ * Class GenerateComposer
  * @package AydinHassan\MagentoCoreMapper\Command
+ * @author Aydin Hassan <aydin@hotmail.co.uk>
  */
 class GenerateComposer extends GenerateAbstract
 {
@@ -31,10 +32,11 @@ class GenerateComposer extends GenerateAbstract
     protected function configure()
     {
 
+        parent::configure();
+
         $this
             ->setName('generate:composer')
             ->setDescription('Create a composer mapping file for your Magento Core Package')
-            ->setDefinition(array())
             ->setHelp(<<<EOT
 This command creates a composer mapping file for your magento core package.
 
@@ -47,17 +49,24 @@ Also the composer mapping requires a "magento-root-dir" to be specified in the c
 If the mappings already exist in composer.json, use -f flag or --force-write to force the write!
 EOT
             )
-            ->addArgument("project-root", InputArgument::REQUIRED, "The folder you wish to create the mappings in")
-            ->addArgument("magento-root", InputArgument::REQUIRED, "The Magento root dir when using composer mapping")
-            ->addOption("force-write", "-f", InputOption::VALUE_NONE, "If mapping exists then overwrite it");
+            ->addArgument("magento-root", InputArgument::REQUIRED, "The Magento root dir when using composer mapping");
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @throws \Exception
+     */
     protected function create(InputInterface $input, OutputInterface $output)
     {
         $composerFile = self::MAPFILE;
         if(is_readable($composerFile)) {
             //composer.json exists
             $composerContent = json_decode(file_get_contents($composerFile), true);
+
+            if(!\is_array($composerContent)) {
+                throw new \Exception(sprintf('Invalid data in "%s"', $composerFile));
+            }
 
             if(!isset($composerContent['extra'])) {
                 $composerContent['extra'] = array();
@@ -68,7 +77,7 @@ EOT
             }
 
             $composerContent['type'] = "magento-core";
-            $composerContent['extra']['magento-root-dir'] = $input->getOption("magento-root");
+            $composerContent['extra']['magento-root-dir'] = $input->getArgument("magento-root");
             $composerContent['extra']['map'] = array();
 
             foreach($this->processFiles() as $file) {
