@@ -21,6 +21,7 @@ abstract class GenerateAbstractTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $dir = rtrim(sys_get_temp_dir(), "/") . "/" . time() . rand(0, 1000);
+        echo $dir;
         mkdir($dir, 0777, true);
         $this->projectRoot = realpath($dir);
     }
@@ -45,6 +46,8 @@ abstract class GenerateAbstractTest extends \PHPUnit_Framework_TestCase
             foreach($dir as $childFile) {
                 $this->clean($childFile);
             }
+
+            rmdir($file);
         } else {
             unlink($file);
         }
