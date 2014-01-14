@@ -15,27 +15,21 @@ class GenerateModmanTest extends GenerateAbstractTest
 {
 
     /**
-     * @var \Symfony\Component\Console\Tester\CommandTester
-     */
-    protected $commandTester = null;
-
-    /**
-     * @var \AydinHassan\MagentoCoreMapper\Command\GenerateModman
+     * @var AydinHassan\MagentoCoreMapper\Command\GenerateModman
      */
     protected $command = null;
 
     /**
-     * Create project root dir and set up app + command
+     * @param \PHPUnit_Framework_MockObject_MockObject $fileProcessor
+     * @return CommandTester
      */
-    public function setUp()
+    public function getCommandTester(\PHPUnit_Framework_MockObject_MockObject $fileProcessor)
     {
-        parent::setUp();
-
         $application = new Application();
-        $application->add(new GenerateModman());
+        $application->add(new GenerateModman(null, $fileProcessor));
 
         $this->command = $application->find('generate:modman');
-        $this->commandTester = new CommandTester($this->command);
+        return new CommandTester($this->command);
     }
 
     /**
@@ -44,9 +38,10 @@ class GenerateModmanTest extends GenerateAbstractTest
     public function testModmanFileNotOverwrittenIfExists()
     {
         touch("$this->projectRoot/modman");
-        $this->setExpectedException('Exception', 'File "modman" already exists, run with force-write option to overwrite');
+        $commandTester = $this->getCommandTester($this->getMockFileProcessor(array()));
 
-        $this->commandTester->execute(
+        $this->setExpectedException('Exception', 'File "modman" already exists, run with force-write option to overwrite');
+        $commandTester->execute(
             array(
                 'command'       => $this->command->getName(),
                 'project-root'  => $this->projectRoot,
@@ -60,9 +55,9 @@ class GenerateModmanTest extends GenerateAbstractTest
     public function testModmanFileOverwrittenIfExistsAndForceFlagPassed()
     {
         touch("$this->projectRoot/modman");
-        touch("$this->projectRoot/file1.php");
 
-        $this->commandTester->execute(
+        $commandTester = $this->getCommandTester($this->getMockFileProcessor(array('./file1.php')));
+        $commandTester->execute(
             array(
                 'command'       => $this->command->getName(),
                 'project-root'  => $this->projectRoot,
@@ -80,9 +75,10 @@ class GenerateModmanTest extends GenerateAbstractTest
      */
     public function testExceptionIsThrownIfNoFilesAreInProjectRoot()
     {
-        $this->setExpectedException('Exception', 'File "modman" could not be written');
+        $commandTester = $this->getCommandTester($this->getMockFileProcessor(array()));
 
-        $this->commandTester->execute(
+        $this->setExpectedException('Exception', 'File "modman" could not be written');
+        $commandTester->execute(
             array(
                 'command'       => $this->command->getName(),
                 'project-root'  => $this->projectRoot,
@@ -95,9 +91,8 @@ class GenerateModmanTest extends GenerateAbstractTest
      */
     public function testModmanMappingIsCreated()
     {
-        touch("$this->projectRoot/file1.php");
-
-        $this->commandTester->execute(
+        $commandTester = $this->getCommandTester($this->getMockFileProcessor(array('./file1.php')));
+        $commandTester->execute(
             array(
                 'command'       => $this->command->getName(),
                 'project-root'  => $this->projectRoot,
@@ -114,12 +109,10 @@ class GenerateModmanTest extends GenerateAbstractTest
      */
     public function testModmanMappingIsCreatedWithMultipleFiles()
     {
-        touch("$this->projectRoot/file1.php");
-        mkdir("$this->projectRoot/folder");
-        touch("$this->projectRoot/folder/evenmoar.php");
-        touch("$this->projectRoot/folder/moarcode.php");
 
-        $this->commandTester->execute(
+        $files = array('./file1.php', './folder/evenmoar.php', './folder/moarcode.php');
+        $commandTester = $this->getCommandTester($this->getMockFileProcessor($files));
+        $commandTester->execute(
             array(
                 'command'       => $this->command->getName(),
                 'project-root'  => $this->projectRoot,
@@ -127,7 +120,6 @@ class GenerateModmanTest extends GenerateAbstractTest
         );
 
         $content = "file1.php file1.php\nfolder/evenmoar.php folder/evenmoar.php\nfolder/moarcode.php folder/moarcode.php\n";
-        var_dump(\file_get_contents("$this->projectRoot/modman"));
         $this->assertFileExists("$this->projectRoot/modman");
         $this->assertEquals($content, \file_get_contents("$this->projectRoot/modman"));
     }

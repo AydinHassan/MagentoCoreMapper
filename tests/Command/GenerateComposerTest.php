@@ -15,27 +15,21 @@ class GenerateComposerTest extends GenerateAbstractTest
 {
 
     /**
-     * @var \Symfony\Component\Console\Tester\CommandTester
-     */
-    protected $commandTester = null;
-
-    /**
-     * @var \AydinHassan\MagentoCoreMapper\Command\GenerateComposer
+     * @var AydinHassan\MagentoCoreMapper\Command\GenerateComposer
      */
     protected $command = null;
 
     /**
-     * Create project root dir and set up app + command
+     * @param \PHPUnit_Framework_MockObject_MockObject $fileProcessor
+     * @return CommandTester
      */
-    public function setUp()
+    public function getCommandTester(\PHPUnit_Framework_MockObject_MockObject $fileProcessor)
     {
-        parent::setUp();
-
         $application = new Application();
-        $application->add(new GenerateComposer());
+        $application->add(new GenerateComposer(null, $fileProcessor));
 
         $this->command = $application->find('generate:composer');
-        $this->commandTester = new CommandTester($this->command);
+        return new CommandTester($this->command);
     }
 
     /**
@@ -43,9 +37,11 @@ class GenerateComposerTest extends GenerateAbstractTest
      */
     public function testMappingFailsIfComposerFileNotExists()
     {
-        $this->setExpectedException('Exception', sprintf('Composer file "composer.json" does not exist. Please create one in your project root "%s" using "composer init", before adding the mappings', $this->projectRoot));
 
-        $this->commandTester->execute(
+        $commandTester = $this->getCommandTester($this->getMockFileProcessor(array()));
+
+        $this->setExpectedException('Exception', sprintf('Composer file "composer.json" does not exist. Please create one in your project root "%s" using "composer init", before adding the mappings', $this->projectRoot));
+        $commandTester->execute(
             array(
                 'command'       => $this->command->getName(),
                 'project-root'  => $this->projectRoot,
@@ -62,9 +58,10 @@ class GenerateComposerTest extends GenerateAbstractTest
         $data = \json_encode(array('extra' => array('map' => array())));
         \file_put_contents("$this->projectRoot/composer.json", $data);
 
-        $this->setExpectedException('Exception', 'Mappings seem to already exist in "composer.json" run with force-write option to overwrite');
+        $commandTester = $this->getCommandTester($this->getMockFileProcessor(array()));
 
-        $this->commandTester->execute(
+        $this->setExpectedException('Exception', 'Mappings seem to already exist in "composer.json" run with force-write option to overwrite');
+        $commandTester->execute(
             array(
                 'command'       => $this->command->getName(),
                 'project-root'  => $this->projectRoot,
@@ -79,12 +76,12 @@ class GenerateComposerTest extends GenerateAbstractTest
     public function testMappingsOverwrittenIfExistInComposerFileAndForceFlagPassed()
     {
 
-        touch("$this->projectRoot/test.php");
+        $commandTester = $this->getCommandTester($this->getMockFileProcessor(array('./file1.php')));
 
         $data = \json_encode(array('extra' => array('map' => array('file1.php' => 'file1.php'))));
         \file_put_contents("$this->projectRoot/composer.json", $data);
 
-        $this->commandTester->execute(
+        $commandTester->execute(
             array(
                 'command'       => $this->command->getName(),
                 '-f'            => true,
@@ -97,7 +94,7 @@ class GenerateComposerTest extends GenerateAbstractTest
         $expected = array(
             'extra' => array(
                 'map' => array(
-                    array('test.php', 'test.php')
+                    array('file1.php', 'file1.php')
                 ),
                 'magento-root-dir' => 'htdocs'
             ),
@@ -112,11 +109,12 @@ class GenerateComposerTest extends GenerateAbstractTest
      */
     public function testExceptionIfThrownIsComposerFileInvalid()
     {
-
         touch("$this->projectRoot/composer.json");
 
+        $commandTester = $this->getCommandTester($this->getMockFileProcessor(array()));
+
         $this->setExpectedException("Exception", 'Invalid data in "composer.json"');
-        $this->commandTester->execute(
+        $commandTester->execute(
             array(
                 'command'       => $this->command->getName(),
                 '-f'            => true,
@@ -133,11 +131,12 @@ class GenerateComposerTest extends GenerateAbstractTest
     public function testComposerMappingIsCreated()
     {
 
-        touch("$this->projectRoot/test.php");
+        $commandTester = $this->getCommandTester($this->getMockFileProcessor(array('./file1.php')));
+
         $data = \json_encode(array());
         \file_put_contents("$this->projectRoot/composer.json", $data);
 
-        $this->commandTester->execute(
+        $commandTester->execute(
             array(
                 'command'       => $this->command->getName(),
                 '-f'            => true,
@@ -151,7 +150,7 @@ class GenerateComposerTest extends GenerateAbstractTest
             'extra' => array(
                 'magento-root-dir' => 'htdocs',
                 'map' => array(
-                    array('test.php', 'test.php')
+                    array('file1.php', 'file1.php')
                 ),
             ),
             'type' => 'magento-core'
@@ -166,15 +165,13 @@ class GenerateComposerTest extends GenerateAbstractTest
     public function testComposerMappingIsCreatedWithMultipleFiles()
     {
 
-        touch("$this->projectRoot/file1.php");
-        mkdir("$this->projectRoot/folder");
-        touch("$this->projectRoot/folder/evenmoar.php");
-        touch("$this->projectRoot/folder/moarcode.php");
+        $files = array('./file1.php', './folder/evenmoar.php', './folder/moarcode.php');
+        $commandTester = $this->getCommandTester($this->getMockFileProcessor($files));
 
         $data = \json_encode(array());
         \file_put_contents("$this->projectRoot/composer.json", $data);
 
-        $this->commandTester->execute(
+        $commandTester->execute(
             array(
                 'command'       => $this->command->getName(),
                 '-f'            => true,

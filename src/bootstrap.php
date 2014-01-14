@@ -15,9 +15,10 @@ if ((!$loader = includeIfExists(__DIR__.'/../vendor/autoload.php')) && (!$loader
         'php composer.phar install'.PHP_EOL);
 }
 
+$fileProcessor = new \AydinHassan\MagentoCoreMapper\Service\FileProcessor();
 $app = new \Symfony\Component\Console\Application('Magento Core Mapper', '0.1.0');
 $app->addCommands(array(
-    new \AydinHassan\MagentoCoreMapper\Command\GenerateComposer(),
-    new \AydinHassan\MagentoCoreMapper\Command\GenerateModman(),
+    new \AydinHassan\MagentoCoreMapper\Command\GenerateComposer($fileProcessor),
+    new \AydinHassan\MagentoCoreMapper\Command\GenerateModman($fileProcessor),
 ));
 $app->run();

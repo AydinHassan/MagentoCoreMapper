@@ -1,6 +1,7 @@
 <?php
 
 namespace AydinHassan\MagentoCoreMapper\Command;
+use AydinHassan\MagentoCoreMapper\Service\FileProcessor;
 
 /**
  * Class GenerateAbstractTest
@@ -50,5 +51,21 @@ abstract class GenerateAbstractTest extends \PHPUnit_Framework_TestCase
         } else {
             unlink($file);
         }
+    }
+
+    /**
+     * Create a mock FileProcessor which will return the given array
+     *
+     * @param array $return
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    public function getMockFileProcessor(array $return)
+    {
+        $mock = $this->getMock('AydinHassan\MagentoCoreMapper\Service\FileProcessor');
+        $mock->expects($this->any())
+            ->method('processFiles')
+            ->will($this->returnValue($return));
+
+        return $mock;
     }
 } 

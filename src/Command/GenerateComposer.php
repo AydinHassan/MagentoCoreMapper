@@ -80,7 +80,7 @@ EOT
             $composerContent['extra']['magento-root-dir'] = $input->getArgument("magento-root");
             $composerContent['extra']['map'] = array();
 
-            foreach($this->processFiles() as $file) {
+            foreach($this->fileProcessor->processFiles() as $file) {
                 $file = substr($file, 2);
                 $composerContent['extra']['map'][] = array($file, $file);
             }

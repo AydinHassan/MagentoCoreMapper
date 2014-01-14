@@ -7,6 +7,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use AydinHassan\MagentoCoreMapper\Service\FileProcessor;
 
 /**
  * Class GenerateAbstract
@@ -22,18 +23,18 @@ abstract class GenerateAbstract extends Command
     protected $projectRoot;
 
     /**
-     * Get all files within the project root dir. We allready chdir'd there
-     *  - we chdir and use "." so we can get relative path and not /Users/bleh/projects/etc prepended
-     * to each file
-     *
-     * @return \RecursiveIteratorIterator
+     * @var \AydinHassan\MagentoCoreMapper\Service\FileProcessor
      */
-    protected function processFiles()
+    protected $fileProcessor;
+
+    /**
+     * @param null $name
+     * @param FileProcessor $fileProcessor
+     */
+    public function __construct($name = null, FileProcessor $fileProcessor)
     {
-        $dirIterator    = new \RecursiveDirectoryIterator(".", \FilesystemIterator::SKIP_DOTS | \RecursiveIteratorIterator::SELF_FIRST);
-        $filter         = new \AydinHassan\MagentoCoreMapper\RecursiveFilterIterator\Mappings($dirIterator);
-        $iterator       = new \RecursiveIteratorIterator($filter);
-        return $iterator;
+        $this->fileProcessor = $fileProcessor;
+        parent::__construct($name);
     }
 
     /**
