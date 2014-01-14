@@ -33,13 +33,7 @@ abstract class GenerateAbstract extends Command
         $dirIterator    = new \RecursiveDirectoryIterator(".", \FilesystemIterator::SKIP_DOTS | \RecursiveIteratorIterator::SELF_FIRST);
         $filter         = new \AydinHassan\MagentoCoreMapper\RecursiveFilterIterator\Mappings($dirIterator);
         $iterator       = new \RecursiveIteratorIterator($filter);
-
-        $files = array();
-        foreach($iterator as $file) {
-            $files[] = $file;
-        }
-        asort($files);
-        return $files;
+        return $iterator;
     }
 
     /**
