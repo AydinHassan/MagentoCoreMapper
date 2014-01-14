@@ -126,9 +126,10 @@ class GenerateModmanTest extends GenerateAbstractTest
             )
         );
 
-        $content = "file1.php file1.php\nfolder/evenmoar.php folder/evenmoar.php\nfolder/moarcode.php folder/moarcode.php";
+        $content = "file1.php file1.php\nfolder/evenmoar.php folder/evenmoar.php\nfolder/moarcode.php folder/moarcode.php\n";
+        var_dump(\file_get_contents("$this->projectRoot/modman"));
         $this->assertFileExists("$this->projectRoot/modman");
-        $this->assertEquals($content, trim(\file_get_contents("$this->projectRoot/modman")));
+        $this->assertEquals($content, \file_get_contents("$this->projectRoot/modman"));
     }
 
 } 

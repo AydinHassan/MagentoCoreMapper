@@ -60,6 +60,7 @@ EOT
 
         $content = "";
         foreach($this->processFiles() as $file) {
+            echo "$file\n";
             $file = substr($file, 2);
             $content .= sprintf("%s %s\n", $file, $file);
         }
