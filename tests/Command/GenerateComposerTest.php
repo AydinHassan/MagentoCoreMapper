@@ -45,7 +45,6 @@ class GenerateComposerTest extends GenerateAbstractTest
             array(
                 'command'       => $this->command->getName(),
                 'project-root'  => $this->projectRoot,
-                'magento-root'  => "htdocs",
             )
         );
     }
@@ -65,7 +64,6 @@ class GenerateComposerTest extends GenerateAbstractTest
             array(
                 'command'       => $this->command->getName(),
                 'project-root'  => $this->projectRoot,
-                'magento-root'  => "htdocs",
             )
         );
     }
@@ -86,8 +84,6 @@ class GenerateComposerTest extends GenerateAbstractTest
                 'command'       => $this->command->getName(),
                 '-f'            => true,
                 'project-root'  => $this->projectRoot,
-                'magento-root'  => "htdocs",
-                '-f'            => true,
             )
         );
 
@@ -96,7 +92,9 @@ class GenerateComposerTest extends GenerateAbstractTest
                 'map' => array(
                     array('file1.php', 'file1.php')
                 ),
-                'magento-root-dir' => 'htdocs'
+            ),
+            'require' => Array (
+                'quafzi/magento-core-installer' => 'dev-master'
             ),
             'type' => 'magento-core'
         );
@@ -119,7 +117,6 @@ class GenerateComposerTest extends GenerateAbstractTest
                 'command'       => $this->command->getName(),
                 '-f'            => true,
                 'project-root'  => $this->projectRoot,
-                'magento-root'  => "htdocs",
             )
         );
 
@@ -141,17 +138,17 @@ class GenerateComposerTest extends GenerateAbstractTest
                 'command'       => $this->command->getName(),
                 '-f'            => true,
                 'project-root'  => $this->projectRoot,
-                'magento-root'  => "htdocs",
-                '-f'            => true,
             )
         );
 
         $expected = array(
             'extra' => array(
-                'magento-root-dir' => 'htdocs',
                 'map' => array(
                     array('file1.php', 'file1.php')
                 ),
+            ),
+            'require' => Array (
+                'quafzi/magento-core-installer' => 'dev-master'
             ),
             'type' => 'magento-core'
         );
@@ -176,19 +173,19 @@ class GenerateComposerTest extends GenerateAbstractTest
                 'command'       => $this->command->getName(),
                 '-f'            => true,
                 'project-root'  => $this->projectRoot,
-                'magento-root'  => "htdocs",
-                '-f'            => true,
             )
         );
 
         $expected = array(
             'extra' => array(
-                'magento-root-dir' => 'htdocs',
                 'map' => array(
                     array('file1.php', 'file1.php'),
                     array('folder/evenmoar.php', 'folder/evenmoar.php'),
                     array('folder/moarcode.php', 'folder/moarcode.php'),
                 ),
+            ),
+            'require' => Array (
+                'quafzi/magento-core-installer' => 'dev-master'
             ),
             'type' => 'magento-core'
         );
