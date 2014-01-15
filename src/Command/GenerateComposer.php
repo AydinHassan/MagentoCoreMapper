@@ -44,12 +44,9 @@ It will change to the directory you pass in as "project-root" and recursively li
 A basic composer.json file must exist in the "project-root" dir. You can create one manually or run "composer init" to generate one interactively.
 This command will add the mappings to the existing composer.json.
 
-Also the composer mapping requires a "magento-root-dir" to be specified in the composer.json. See: https://github.com/magento-hackathon/magento-composer-installer/issues/50.
-
 If the mappings already exist in composer.json, use -f flag or --force-write to force the write!
 EOT
-            )
-            ->addArgument("magento-root", InputArgument::REQUIRED, "The Magento root dir when using composer mapping");
+            );
     }
 
     /**
@@ -76,8 +73,20 @@ EOT
                 throw new \Exception(sprintf('Mappings seem to already exist in "%s" run with force-write option to overwrite', $composerFile));
             }
 
+            $createRequire = false;
+            if(isset($composerContent['require']) && is_array($composerContent['require'])) {
+                if(!\array_key_exists('quafzi/magento-core-installer', $composerContent['require'])) {
+                    $createRequire = true;
+                }
+            } elseif(!isset($composerContent['require'])) {
+                $createRequire = true;
+            }
+
+            if($createRequire) {
+                $composerContent['require']['quafzi/magento-core-installer'] = "dev-master";
+            }
+
             $composerContent['type'] = "magento-core";
-            $composerContent['extra']['magento-root-dir'] = $input->getArgument("magento-root");
             $composerContent['extra']['map'] = array();
 
             foreach($this->fileProcessor->processFiles() as $file) {
@@ -85,15 +94,7 @@ EOT
                 $composerContent['extra']['map'][] = array($file, $file);
             }
 
-
-            //use Composer JsonEncoder as it can pretty print on php < 5.4
-            if(version_compare("5.4", ">=")) {
-                $json = json_encode($composerContent);
-            } else {
-                $jsonPretty = new JsonPretty();
-                $json = $jsonPretty->prettify($composerContent);
-            }
-
+            $json = \AydinHassan\MagentoCoreMapper\Helper\Json::encode($composerContent);
             $this->writeFile($composerFile, $json, $input, $output);
 
         } else {

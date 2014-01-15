@@ -43,8 +43,8 @@ abstract class GenerateAbstract extends Command
      */
     protected function setProjectRoot($projectRoot)
     {
-        $this->projectRoot = $projectRoot;
-        chdir($projectRoot);
+        $this->projectRoot = realpath($projectRoot);
+        chdir($this->projectRoot);
         return $this;
     }
 
