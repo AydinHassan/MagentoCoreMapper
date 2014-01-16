@@ -19,7 +19,10 @@ Installation
 TODO
 
 ### Composer
-TODO
+    
+    composer create-project aydin-hassan/magento-core-mapper:0.1.0
+    cd magento-core-mapper
+    ./bin/magento-core-mapper
 
 ### Git
 
