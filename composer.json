@@ -9,6 +9,9 @@
     "require-dev": {
         "phpunit/phpunit": "3.7.*"
     },
+    "suggest": {
+        "quafzi/magento-core-installer": "A module to enable installing Magento Core Packages with Composer"
+    },
     "license": "GPL V2",
     "authors": [
         {
