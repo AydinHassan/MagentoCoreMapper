@@ -2,6 +2,8 @@ MagentoCoreMapper
 =================
 [![Build Status](https://travis-ci.org/AydinHassan/MagentoCoreMapper.png?branch=master)](https://travis-ci.org/AydinHassan/MagentoCoreMapper)
 [![Dependency Status](https://www.versioneye.com/user/projects/52d68e7dec13752fc5000268/badge.png)](https://www.versioneye.com/user/projects/52d68e7dec13752fc5000268)
+[![Latest Stable Version](https://poser.pugx.org/aydin-hassan/magento-core-mapper/version.png)](https://packagist.org/packages/aydin-hassan/magento-core-mapper)
+[![Latest Untable Version](https://poser.pugx.org/aydin-hassan/magento-core-mapper/v/unstable.png)](https://packagist.org/packages/aydin-hassan/magento-core-mapper)
 
 A small library to create modman or composer.json mappings for Magento Core packages
 
