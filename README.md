@@ -20,10 +20,23 @@ Installation
 Download
 
     wget https://raw.github.com/AydinHassan/MagentoCoreMapper/master/build/mage-core-mapper.phar
+    
+Make executable
+    
+    chmod +x ./mage-core-mapper.phar
 
 Move to path location, so you can execute it from anywhere
 
-    sudo mv ./mage-core-mapper /usr/local/bin
+    sudo mv ./mage-core-mapper.phar /usr/local/bin/mage-core-mapper
+    
+You can name the file anything you want
+
+    sudo mv ./mage-core-mapper.phar /usr/local/bin/mcm
+    
+To run, simple invoke the executable name anywhere
+
+    mcm --version
+
 
 ### Composer
     
