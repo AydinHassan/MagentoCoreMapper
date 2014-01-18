@@ -1,0 +1,27 @@
+{
+    "chmod": "0755",
+    "files": [
+        "LICENSE",
+        "vendor/composer/installed.json"
+    ],
+    "finder": [
+        {
+            "name": [
+                "*.php"
+            ],
+            "notName": [
+                "composer.json"
+            ],
+            "exclude": [
+                "phpunit",
+                "Tests",
+                "tests"
+            ],
+            "in": ["bin", "src", "vendor"]
+        }
+    ],
+    "git-version": "git_version",
+    "main": "bin/magento-core-mapper",
+    "output": "build/mage-core-mapper.phar",
+    "stub": true
+}

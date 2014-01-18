@@ -16,7 +16,14 @@ Installation
 ------------
 
 ### Phar
-TODO
+
+Download
+
+    wget https://raw.github.com/AydinHassan/MagentoCoreMapper/master/build/mage-core-mapper.phar
+
+Move to path location, so you can execute it from anywhere
+
+    sudo mv ./mage-core-mapper /usr/local/bin
 
 ### Composer
     
