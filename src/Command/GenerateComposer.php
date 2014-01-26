@@ -82,7 +82,7 @@ EOT
             }
 
             if($createRequire) {
-                $composerContent['require']['quafzi/magento-core-installer'] = "dev-master";
+                $composerContent['require']['quafzi/magento-core-installer'] = "*";
             }
 
             $composerContent['type'] = "magento-core";
