@@ -19,8 +19,8 @@ class Mappings extends \RecursiveFilterIterator
         'composer.json',
         'composer.phar',
         'modman',
-        '.gitignore',,
-        'vendor'
+        '.gitignore',
+        'vendor',
     );
 
     public function accept() {
