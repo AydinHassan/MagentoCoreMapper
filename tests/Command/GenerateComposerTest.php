@@ -94,7 +94,7 @@ class GenerateComposerTest extends GenerateAbstractTest
                 ),
             ),
             'require' => Array (
-                'quafzi/magento-core-installer' => 'dev-master'
+                'quafzi/magento-core-installer' => '*'
             ),
             'type' => 'magento-core'
         );
@@ -148,7 +148,7 @@ class GenerateComposerTest extends GenerateAbstractTest
                 ),
             ),
             'require' => Array (
-                'quafzi/magento-core-installer' => 'dev-master'
+                'quafzi/magento-core-installer' => '*'
             ),
             'type' => 'magento-core'
         );
@@ -185,7 +185,7 @@ class GenerateComposerTest extends GenerateAbstractTest
                 ),
             ),
             'require' => Array (
-                'quafzi/magento-core-installer' => 'dev-master'
+                'quafzi/magento-core-installer' => '*'
             ),
             'type' => 'magento-core'
         );
