@@ -1,3 +1,9 @@
+THIS TOOL IS DEPRECATED
+=======================
+
+Use https://github.com/AydinHassan/magento-core-composer-installer instead to manage magento core as a composer dependency 
+
+
 MagentoCoreMapper
 =================
 [![Build Status](https://travis-ci.org/AydinHassan/MagentoCoreMapper.png?branch=master)](https://travis-ci.org/AydinHassan/MagentoCoreMapper)
